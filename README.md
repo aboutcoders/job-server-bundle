@@ -4,8 +4,11 @@ A symfony bundle for asynchronous distributed job processing using [php-enqueue]
 
 **Note: This project is still in an experimental phase!**
 
-## Requirements:
-* PHP >= 7.2
+## Installation
+
+```bash
+composer install abc/job-server-bundle
+```
 
 ## Features
 
