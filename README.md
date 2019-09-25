@@ -34,7 +34,7 @@ Please take a look at [job-docker-compose](https://gitlab.com/hasc/job-docker-co
 1. In case you configured a transport with a key different that `default` you have to configure this transport also for the AbcJobServerBundle
 
 	```yaml
-	abc_job:
+	abc_job_server:
 	    transport: my_transport_name
 	```
 
@@ -64,7 +64,7 @@ Please take a look at [job-docker-compose](https://gitlab.com/hasc/job-docker-co
 ## Configuration Reference
 
 ```yaml
-abc_job:
+abc_job_server:
     # the enqueue transport name
     transport: default
     

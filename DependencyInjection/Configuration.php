@@ -15,8 +15,13 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('abc_job');
+        if (method_exists(TreeBuilder::class, 'getRootNode')) {
+            $tb = new TreeBuilder('abc_job_server');
+            $rootNode = $tb->getRootNode();
+        } else {
+            $tb = new TreeBuilder();
+            $rootNode = $tb->root('abc_job_server');
+        }
 
         $rootNode
             ->children()
@@ -28,7 +33,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->getSchedulerConfiguration())
             ->end();
 
-        return $treeBuilder;
+        return $tb;
     }
 
     private function getSchedulerConfiguration(): ArrayNodeDefinition
