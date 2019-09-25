@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
-class AbcJobExtension extends Extension implements PrependExtensionInterface
+class AbcJobServerExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritDoc}
