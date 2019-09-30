@@ -29,11 +29,6 @@ class AbcJobServerExtension extends Extension implements PrependExtensionInterfa
 
         $diUtils = DiUtils::create();
 
-        $bundles = $container->getParameter('kernel.bundles');
-        if (! isset($bundles['EnqueueBundle'])) {
-            throw new \LogicException('The "enqueue/enqueue-bundle" package has to be installed.');
-        }
-
         $configId = $diUtils->format('config');
         $container->register($configId, Config::class)->setArguments([
             $config['prefix'],
