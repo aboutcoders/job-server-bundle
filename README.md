@@ -2,7 +2,7 @@
 
 A symfony bundle for asynchronous distributed job processing using [php-enqueue](https://github.com/php-enqueue/enqueue-dev) as transport layer.
 
-**Note: This project is still in an experimental phase!**
+**Note: This project is still experimental!**
 
 ## Installation
 
@@ -12,18 +12,20 @@ composer install abc/job-server-bundle
 
 ## Features
 
-This bundle provides the following features:
+* Asynchronous distributed processing of 
+    * Job: a single job
+    * Batch: multiple jobs that are processed in parallel
+    * Sequence: multiple jobs processed in sequential order
+    * Free composition of Job, Sequence, and Batch
+* Status information about jobs
+* Cancellation and restarting of jobs
+* Scheduled processing of jobs (requires [AbcSchedulerBundle](https://github.com/aboutcoders/scheduler-bundle/blob/master/AbcSchedulerBundle.php) 2.x) 
+* JSON REST-Api & PHP client library
+* [OpenApi](https://www.openapis.org/) documentation
 
-- Asynchronous distributed processing of Job (single job), Batch (multiple jobs processed in parallel), and Sequence (multiple jobs processed in sequential order)
-- Status information about jobs
-- Process, cancel, restart jobs.
-- Scheduled processing of jobs with based on cron expressions (requires AbcSchedulerBundle) 
-- JSON REST-Api & PHP client library
-- [OpenApi](https://www.openapis.org/) documentation
+## Demo
 
-## Demo Project
-
-Please take a look at [job-docker-compose](https://gitlab.com/hasc/job-docker-compose) to see how the AbcJobServerBundle can be used within Symfony project.
+Please take a look at [here](https://gitlab.com/hasc/job-docker-compose) and start a demo application based on docker-compose in a couple of minutes.
 
 ## Getting Started
 
