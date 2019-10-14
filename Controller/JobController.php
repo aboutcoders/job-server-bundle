@@ -2,7 +2,7 @@
 
 namespace Abc\JobServerBundle\Controller;
 
-use Abc\Job\HttpServer;
+use Abc\Job\HttpJobServer;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,11 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class JobController extends AbstractController
 {
     /**
-     * @var HttpServer
+     * @var HttpJobServer
      */
     private $httpServer;
 
-    public function __construct(HttpServer $httpServer)
+    public function __construct(HttpJobServer $httpServer)
     {
         $this->httpServer = $httpServer;
     }
@@ -27,9 +27,9 @@ class JobController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request)
+    public function all(Request $request)
     {
-        return $this->createResponse($this->httpServer->index($request->getQueryString(), $request->getUri()));
+        return $this->createResponse($this->httpServer->all($request->getQueryString(), $request->getUri()));
     }
 
     /**

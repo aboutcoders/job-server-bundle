@@ -20,6 +20,6 @@ services:
     abc.job.schedule_processor:
         class: Abc\Job\Schedule\ScheduleProcessor
         arguments:
-            - '@abc.job.server'
+            - '@abc.job.job_server'
         tags:
             - { name: 'abc.scheduler.schedule_processor', provider: 'abc.job.schedule_provider' }
