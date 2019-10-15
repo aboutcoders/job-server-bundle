@@ -19,7 +19,7 @@ services:
             - '@logger'
 
     abc.job.http_route_server:
-        class: Abc\Job\HttpJobServer
+        class: Abc\Job\HttpRouteServer
         public: true
         arguments:
             - '@abc.job.route_registry'
