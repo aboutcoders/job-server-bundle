@@ -64,28 +64,13 @@ Please take a look at [here](https://gitlab.com/hasc/job-docker-compose) and sta
 	see AbcWorkerBundle
 
 ## Configuration Reference
-
-```yaml
-abc_job_server:
-    # the enqueue transport name
-    transport: default
-    
-    # the name of the queue jobs are sent to by default
-    default_queue: default
-    
-    # the name of the queue where replies of jobs are sent to by default
-    default_replyTo: reply
-    
-    # a prefix to be used for queue names
-    prefix: abc
-    
-    # a separator for used for queue names
-    separator: .
-    
-    # whether to enable the scheduler component
-    scheduler:
-        enabled: true
-```
+   
+   ```yaml
+   abc_job_server:
+       # whether to enable the scheduler component
+       scheduler:
+           enabled: true
+   ```
 
 ## License
 
