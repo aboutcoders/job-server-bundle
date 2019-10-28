@@ -89,3 +89,10 @@ services:
             - '@abc.job.job_server'
             - '@Abc\Job\Model\JobManagerInterface'
             - '@logger'
+
+    abc.job.process_reply_command:
+        class: 'Abc\Job\Symfony\Command\ProcessReplyCommand'
+        arguments:
+            - '@enqueue.transport.consume_command'
+        tags:
+            - { name: 'console.command' }

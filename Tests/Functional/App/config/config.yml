@@ -1,0 +1,34 @@
+parameters:
+  locale: 'en'
+  secret: 'ThisTokenIsNotSoSecretChangeIt'
+
+framework:
+  #esi:             ~
+  #translator:      { fallback: "%locale%" }
+  test: ~
+  assets: false
+  templating: false
+  session:
+    storage_id: session.storage.mock_file
+  secret:          '%secret%'
+  router:          { resource: '%kernel.root_dir%/config/routing.yml' }
+  default_locale:  '%locale%'
+
+enqueue:
+  default:
+    transport: 'null:'
+    client: ~
+
+doctrine:
+  dbal:
+    # configure these for your database server
+    driver: 'sqlite'
+    url: 'sqlite::memory:'
+  orm:
+    auto_generate_proxy_classes: true
+    naming_strategy: doctrine.orm.naming_strategy.underscore
+    auto_mapping: true
+
+services:
+
+
