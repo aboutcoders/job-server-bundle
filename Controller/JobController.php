@@ -2,7 +2,7 @@
 
 namespace Abc\JobServerBundle\Controller;
 
-use Abc\Job\HttpJobServer;
+use Abc\Job\Controller\JobController as Controller;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,13 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class JobController extends AbstractController
 {
     /**
-     * @var HttpJobServer
+     * @var Controller
      */
-    private $httpServer;
+    private $controller;
 
-    public function __construct(HttpJobServer $httpServer)
+    public function __construct(Controller $jobController)
     {
-        $this->httpServer = $httpServer;
+        $this->controller = $jobController;
     }
 
     /**
@@ -27,9 +27,9 @@ class JobController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function all(Request $request)
+    public function list(Request $request)
     {
-        return $this->createResponse($this->httpServer->all($request->getQueryString(), $request->getUri()));
+        return $this->createResponse($this->controller->list($request->getQueryString(), $request->getUri()));
     }
 
     /**
@@ -40,7 +40,7 @@ class JobController extends AbstractController
      */
     public function process(Request $request)
     {
-        return $this->createResponse($this->httpServer->process($request->getContent(), $request->getUri()));
+        return $this->createResponse($this->controller->process($request->getContent(), $request->getUri()));
     }
 
     /**
@@ -51,7 +51,7 @@ class JobController extends AbstractController
      */
     public function result(string $id, Request $request): Response
     {
-        return $this->createResponse($this->httpServer->result($id, $request->getUri()));
+        return $this->createResponse($this->controller->result($id, $request->getUri()));
     }
 
     /**
@@ -63,7 +63,7 @@ class JobController extends AbstractController
      */
     public function restart(string $id, Request $request): Response
     {
-        return $this->createResponse($this->httpServer->restart($id, $request->getUri()));
+        return $this->createResponse($this->controller->restart($id, $request->getUri()));
     }
 
     /**
@@ -75,7 +75,7 @@ class JobController extends AbstractController
      */
     public function cancel(string $id, Request $request): Response
     {
-        return $this->createResponse($this->httpServer->cancel($id, $request->getUri()));
+        return $this->createResponse($this->controller->cancel($id, $request->getUri()));
     }
 
     /**
@@ -87,7 +87,7 @@ class JobController extends AbstractController
      */
     public function delete(string $id, Request $request): Response
     {
-        return $this->createResponse($this->httpServer->delete($id, $request->getUri()));
+        return $this->createResponse($this->controller->delete($id, $request->getUri()));
     }
 
     private function createResponse(ResponseInterface $response): Response

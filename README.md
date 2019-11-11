@@ -4,6 +4,10 @@ A symfony bundle for asynchronous distributed job processing using [php-enqueue]
 
 **Note: This project is still experimental!**
 
+## Demo
+
+Please take a look at [job-docker-compose](https://gitlab.com/hasc/job-docker-compose) and start a demo application within a couple of minutes.
+
 ## Installation
 
 ```bash
@@ -23,15 +27,10 @@ composer install abc/job-server-bundle
 * JSON REST-Api & PHP client library
 * [OpenApi](https://www.openapis.org/) documentation
 
-## Demo
-
-Please take a look at [here](https://gitlab.com/hasc/job-docker-compose) and start a demo application based on docker-compose in a couple of minutes.
-
 ## Getting Started
 
-**Prerequisites**
-* Configure a Symfony application with AbcJobServerBundle
-* Configure the enqueue transport layer
+### Prerequisites
+* EnqueueBundle is configured with a transport layer
 
 1. In case you configured a transport with a key different that `default` you have to configure this transport also for the AbcJobServerBundle
 
@@ -47,21 +46,13 @@ Please take a look at [here](https://gitlab.com/hasc/job-docker-compose) and sta
 	bin/console doctrine:schema:create
 	```
 
-3. Setup the broker
+3. Start the command that processes replies from workers
 
 	```bash
-	bin/console abc:setup-broker -vvv
+	bin/console abc:process:reply someReplyQueue
 	```
-
-4. Start the command that processes replies from workers
-
-	```bash
-	bin/console enqueue:transport:consume job_reply abc.reply -vvv
-	```
-
-5. Start the worker processes
-
-	see AbcWorkerBundle
+ 
+ 4. Create an application that will consume jobs using the [AbcJobWorkerBundle](https://github.com/aboutcoders/job-worker-bundle) that will process jobs.
 
 ## Configuration Reference
    

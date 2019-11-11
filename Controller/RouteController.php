@@ -2,7 +2,7 @@
 
 namespace Abc\JobServerBundle\Controller;
 
-use Abc\Job\HttpRouteServer;
+use Abc\Job\Controller\RouteController as Controller;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,13 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class RouteController extends AbstractController
 {
     /**
-     * @var HttpRouteServer
+     * @var Controller
      */
-    private $httpRouteServer;
+    private $controller;
 
-    public function __construct(HttpRouteServer $httpRouteServer)
+    public function __construct(Controller $routeController)
     {
-        $this->httpRouteServer = $httpRouteServer;
+        $this->controller = $routeController;
     }
 
     /**
@@ -29,7 +29,7 @@ class RouteController extends AbstractController
      */
     public function all(Request $request)
     {
-        return $this->createResponse($this->httpRouteServer->all($request->getUri()));
+        return $this->createResponse($this->controller->all($request->getUri()));
     }
 
     /**
@@ -40,7 +40,7 @@ class RouteController extends AbstractController
      */
     public function create(Request $request)
     {
-        return $this->createResponse($this->httpRouteServer->create($request->getContent(), $request->getUri()));
+        return $this->createResponse($this->controller->create($request->getContent(), $request->getUri()));
     }
 
     private function createResponse(ResponseInterface $response): Response
