@@ -25,7 +25,8 @@
         "doctrine/orm": "^2.6",
         "enqueue/enqueue-bundle": "^0.9",
         "aboutcoders/scheduler-bundle": "2.x-dev",
-        "enqueue/null": "^0.9"
+        "enqueue/null": "^0.9",
+        "dama/doctrine-test-bundle": "^6.2"
     },
     "autoload": {
         "psr-4": { "Abc\\JobServerBundle\\": "" },

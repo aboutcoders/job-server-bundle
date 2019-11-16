@@ -1,19 +1,34 @@
 services:
-    Abc\JobServerBundle\Controller\ScheduleController:
+
+    Abc\JobServerBundle\Controller\CronJobController:
         public: true
         arguments:
-            - '@abc.job.schedule_manager'
+            - '@abc.job.base_cronjob_controller'
 
-    abc.job.schedule_manager:
-        class: Abc\Job\Doctrine\ScheduleManager
+    abc.job.base_cronjob_controller:
+        class: Abc\Job\Controller\CronJobController
+        public: true
+        arguments:
+            - '@abc.job.cronjob_manager'
+            - '@abc.job.validator'
+            - '@logger'
+
+    abc.job.cronjob_manager:
+        public: true
+        class: 'Abc\Job\CronJobManager'
+        arguments:
+            - '@abc.job.cronjob_entity_manager'
+
+    abc.job.cronjob_entity_manager:
+        class: 'Abc\Job\Doctrine\CronJobManager'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - 'Abc\Job\Model\Schedule'
+            - 'Abc\Job\Model\CronJob'
 
     abc.job.schedule_provider:
         class: Abc\Job\Schedule\ScheduleProvider
         arguments:
-            - '@abc.job.schedule_manager'
+            - '@abc.job.cronjob_manager'
         tags:
             - { name: 'abc.scheduler.schedule_provider' }
 

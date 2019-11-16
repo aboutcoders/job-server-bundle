@@ -1,10 +1,5 @@
 services:
 
-    Abc\JobServerBundle\Controller\CronJobController:
-        public: true
-        arguments:
-            - '@abc.job.base_cronjob_controller'
-
     Abc\JobServerBundle\Controller\JobController:
         public: true
         arguments:
@@ -14,14 +9,6 @@ services:
         public: true
         arguments:
             - '@abc.job.base_route_controller'
-
-    abc.job.base_cronjob_controller:
-        class: Abc\Job\Controller\CronJobController
-        public: true
-        arguments:
-            - '@abc.job.cronjob_manager'
-            - '@abc.job.validator'
-            - '@logger'
 
     abc.job.base_job_controller:
         class: Abc\Job\Controller\JobController
@@ -50,17 +37,6 @@ services:
 
     Abc\Job\Model\RouteManagerInterface:
         alias: 'abc.job.route_manager'
-
-    abc.job.cronjob_manager:
-        class: 'Abc\Job\CronJobManager'
-        arguments:
-            - '@abc.job.cronjob_entity_manager'
-
-    abc.job.cronjob_entity_manager:
-        class: 'Abc\Job\Doctrine\CronJobManager'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - 'Abc\Job\Model\CronJob'
 
     abc.job.route_manager:
         class: 'Abc\Job\Doctrine\RouteManager'

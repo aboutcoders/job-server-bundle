@@ -16,7 +16,9 @@ class AppKernel extends Kernel
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Enqueue\Bundle\EnqueueBundle(),
+            new \Abc\SchedulerBundle\AbcSchedulerBundle(),
             new \Abc\JobServerBundle\AbcJobServerBundle(),
+            new \DAMA\DoctrineTestBundle\DAMADoctrineTestBundle()
         ];
 
         return $bundles;
