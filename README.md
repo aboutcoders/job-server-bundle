@@ -1,5 +1,7 @@
 # AbcJobServerBundle
 
+[![Build Status](https://travis-ci.org/aboutcoders/job-server-bundle.png?branch=master)](https://travis-ci.org/aboutcoders/job-server-bundle)
+
 A symfony bundle for asynchronous distributed job processing using [php-enqueue](https://github.com/php-enqueue/enqueue-dev) as transport layer.
 
 **Note: This project is still experimental!**

@@ -42,6 +42,11 @@ class AbcJobServerExtension extends Extension implements PrependExtensionInterfa
 
         // scheduler
         if (false == empty($config['scheduler']['enabled'])) {
+            $bundles = $container->getParameter('kernel.bundles');
+            if (! isset($bundles['AbcSchedulerBundle'])) {
+                throw new \LogicException('The "aboutcoders/scheduler-bundle" package has to be installed.');
+            }
+
             $loader->load('scheduler.yml');
         }
     }
