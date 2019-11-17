@@ -29,7 +29,7 @@ class CronJobController extends AbstractController
      */
     public function list(Request $request)
     {
-        return $this->createResponse($this->cronJobController->list($request->getQueryString(), $request->getRequestUri()));
+        return $this->createResponse($this->cronJobController->list($request->getQueryString(), $request->getUri()));
     }
 
     /**
@@ -41,7 +41,19 @@ class CronJobController extends AbstractController
      */
     public function find(string $id, Request $request)
     {
-        return $this->createResponse($this->cronJobController->find($id, $request->getRequestUri()));
+        return $this->createResponse($this->cronJobController->find($id, $request->getUri()));
+    }
+
+    /**
+     * @Route("/cronjob/{id}/results", methods="GET")
+     *
+     * @param string $id
+     * @param Request $request
+     * @return Response
+     */
+    public function results(string $id, Request $request)
+    {
+        return $this->createResponse($this->cronJobController->results($id, $request->getUri()));
     }
 
     /**
@@ -52,7 +64,7 @@ class CronJobController extends AbstractController
      */
     public function create(Request $request)
     {
-        return $this->createResponse($this->cronJobController->create($request->getContent(), $request->getRequestUri()));
+        return $this->createResponse($this->cronJobController->create($request->getContent(), $request->getUri()));
     }
 
     /**
@@ -64,7 +76,7 @@ class CronJobController extends AbstractController
      */
     public function update(string $id, Request $request)
     {
-        return $this->createResponse($this->cronJobController->update($id, $request->getContent(), $request->getRequestUri()));
+        return $this->createResponse($this->cronJobController->update($id, $request->getContent(), $request->getUri()));
     }
 
     /**
@@ -76,7 +88,7 @@ class CronJobController extends AbstractController
      */
     public function delete(string $id, Request $request)
     {
-        return $this->createResponse($this->cronJobController->delete($id, $request->getRequestUri()));
+        return $this->createResponse($this->cronJobController->delete($id, $request->getUri()));
     }
 
     private function createResponse(ResponseInterface $response): Response
