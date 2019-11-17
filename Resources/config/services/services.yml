@@ -3,13 +3,26 @@ services:
     Abc\JobServerBundle\Controller\JobController:
         public: true
         arguments:
-            - '@abc.job.http_server'
+            - '@abc.job.base_job_controller'
 
-    abc.job.http_server:
-        class: Abc\Job\HttpServer
+    Abc\JobServerBundle\Controller\RouteController:
         public: true
         arguments:
-            - '@abc.job.server'
+            - '@abc.job.base_route_controller'
+
+    abc.job.base_job_controller:
+        class: Abc\Job\Controller\JobController
+        public: true
+        arguments:
+            - '@abc.job.job_server'
+            - '@abc.job.validator'
+            - '@logger'
+
+    abc.job.base_route_controller:
+        class: Abc\Job\Controller\RouteController
+        public: true
+        arguments:
+            - '@abc.job.route_registry'
             - '@abc.job.validator'
             - '@logger'
 
@@ -22,8 +35,16 @@ services:
             - '@doctrine.orm.entity_manager'
             - 'Abc\Job\Model\Job'
 
-    abc.job.server:
-        class: Abc\Job\Server
+    Abc\Job\Model\RouteManagerInterface:
+        alias: 'abc.job.route_manager'
+
+    abc.job.route_manager:
+        class: 'Abc\Job\Doctrine\RouteManager'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    abc.job.job_server:
+        class: Abc\Job\JobServer
         public: true
         arguments:
             - '@abc.job.producer'
@@ -38,19 +59,20 @@ services:
         arguments:
             - '@abc.job.driver'
 
-    abc.job.route_collection:
-        class: Abc\Job\Broker\RouteCollection
-        factory: ['Abc\Job\Broker\RouteCollection', 'fromArray']
-        arguments: [[]]
+    abc.job.route_registry:
+        alias: 'abc.job.setup_broker_route_registry'
 
-    abc.job.setup_broker_command:
-        class: Abc\Job\Symfony\Command\SetupBrokerCommand
-        public: true
+    abc.job.setup_broker_route_registry:
+        class: Abc\Job\Broker\SetupBrokerRouteRegistry
         arguments:
-            - '@service_container'
             - '@abc.job.driver'
-        tags:
-            - { name: 'console.command' }
+            - '@abc.job.managed_route_registry'
+
+    abc.job.managed_route_registry:
+        class: Abc\Job\Broker\ManagedRouteRegistry
+        arguments:
+            - '@Abc\Job\Model\RouteManagerInterface'
+            - '@logger'
 
     abc.job.reply_consumer:
         class: Abc\Job\Interop\ReplyConsumer
@@ -64,6 +86,13 @@ services:
     abc.job.reply_processor:
         class: Abc\Job\ReplyProcessor
         arguments:
-            - '@abc.job.server'
+            - '@abc.job.job_server'
             - '@Abc\Job\Model\JobManagerInterface'
             - '@logger'
+
+    abc.job.process_reply_command:
+        class: 'Abc\Job\Symfony\Command\ProcessReplyCommand'
+        arguments:
+            - '@enqueue.transport.consume_command'
+        tags:
+            - { name: 'console.command' }

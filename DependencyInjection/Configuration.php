@@ -26,10 +26,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('transport')->defaultValue('default')->end()
-                ->scalarNode('default_queue')->defaultValue('default')->end()
-                ->scalarNode('default_replyTo')->defaultValue('reply')->end()
-                ->scalarNode('prefix')->defaultValue('abc')->end()
-                ->scalarNode('separator')->defaultValue('.')->end()
                 ->append($this->getSchedulerConfiguration())
             ->end();
 

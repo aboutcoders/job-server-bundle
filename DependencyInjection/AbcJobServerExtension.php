@@ -29,19 +29,10 @@ class AbcJobServerExtension extends Extension implements PrependExtensionInterfa
 
         $diUtils = DiUtils::create();
 
-        $configId = $diUtils->format('config');
-        $container->register($configId, Config::class)->setArguments([
-            $config['prefix'],
-            $config['separator'],
-            $config['default_queue'],
-            $config['default_replyTo'],
-        ]);
-
-        $container->setParameter($diUtils->parameter('default_queue'), $config['default_queue']);
-        $container->setParameter($diUtils->parameter('default_replyTo'), $config['default_replyTo']);
-
         $driverFactoryId = $diUtils->format('driver_factory');
-        $container->register($driverFactoryId, DriverFactory::class)->addArgument(new Reference($configId))->addArgument(new Reference($diUtils->format('route_collection')))->addArgument(new Reference('logger'));
+        $container->register($driverFactoryId, DriverFactory::class)
+            ->addArgument(new Reference($diUtils->format('managed_route_registry')))
+            ->addArgument(new Reference('logger'));
 
         $driverId = $diUtils->format('driver');
         $container->register($driverId, DriverInterface::class)->setFactory([
@@ -51,6 +42,11 @@ class AbcJobServerExtension extends Extension implements PrependExtensionInterfa
 
         // scheduler
         if (false == empty($config['scheduler']['enabled'])) {
+            $bundles = $container->getParameter('kernel.bundles');
+            if (! isset($bundles['AbcSchedulerBundle'])) {
+                throw new \LogicException('The "aboutcoders/scheduler-bundle" package has to be installed.');
+            }
+
             $loader->load('scheduler.yml');
         }
     }

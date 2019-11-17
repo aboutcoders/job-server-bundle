@@ -15,27 +15,24 @@
         "php": "^7.2",
         "psr/log": "^1.0",
         "symfony/framework-bundle": "^3.4|^4",
-        "abc/job": "dev-master"
+        "abc/job": "dev-route-api"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0",
         "symfony/browser-kit": "^3.4|^4",
+        "symfony/yaml": "^3.4|^4",
         "doctrine/doctrine-bundle": "^1.3",
         "doctrine/orm": "^2.6",
         "enqueue/enqueue-bundle": "^0.9",
         "aboutcoders/scheduler-bundle": "2.x-dev",
-        "enqueue/null": "^0.9"
+        "enqueue/null": "^0.9",
+        "dama/doctrine-test-bundle": "^6.2"
     },
     "autoload": {
         "psr-4": { "Abc\\JobServerBundle\\": "" },
         "exclude-from-classmap": [
             "/Tests/"
         ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Abc\\JobServerBundle\\Tests\\": "tests/"
-        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
