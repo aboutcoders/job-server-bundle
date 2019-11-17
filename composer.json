@@ -15,7 +15,7 @@
         "php": "^7.2",
         "psr/log": "^1.0",
         "symfony/framework-bundle": "^3.4|^4",
-        "abc/job": "dev-route-api"
+        "abc/job": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0",
