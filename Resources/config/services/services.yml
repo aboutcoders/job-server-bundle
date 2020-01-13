@@ -31,6 +31,7 @@ services:
 
     abc.job.job_manager:
         class: 'Abc\Job\Doctrine\JobManager'
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
             - 'Abc\Job\Model\Job'

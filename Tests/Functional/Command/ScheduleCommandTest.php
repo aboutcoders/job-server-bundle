@@ -2,40 +2,15 @@
 
 namespace Abc\JobWorkerBundle\Tests\Functional\Command;
 
+use Abc\JobServerBundle\Tests\Functional\DatabaseTestTrait;
 use Abc\JobServerBundle\Tests\Functional\KernelTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 class ScheduleCommandTest extends KernelTestCase
 {
-    public function setUpDatabase(KernelInterface $kernel)
-    {
-        $kernel->boot();
-        $application = new Application($kernel);
-        $application->setAutoExit(false);
-
-        $application->run(new ArrayInput([
-            'command' => 'doctrine:database:drop',
-            '--force' => '1',
-            '--quiet' => '1',
-        ]));
-        $application->run(new ArrayInput([
-            'command' => 'doctrine:database:create',
-            '--no-interaction' => '1',
-            '--quiet' => '1',
-        ]));
-
-        $application->run(new ArrayInput([
-            'command' => 'doctrine:schema:create',
-            '--no-interaction' => '1',
-            '--quiet' => '1',
-        ]));
-
-        $kernel->shutdown();
-    }
+    use DatabaseTestTrait;
 
     public function testExecute()
     {
