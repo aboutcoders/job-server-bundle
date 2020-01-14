@@ -3,8 +3,6 @@ parameters:
   secret: 'ThisTokenIsNotSoSecretChangeIt'
 
 framework:
-  #esi:             ~
-  #translator:      { fallback: "%locale%" }
   test: ~
   assets: false
   session:
@@ -29,7 +27,9 @@ doctrine:
     auto_mapping: true
 
 abc_job_server:
-  scheduler:
+  cronjob:
+    enabled: true
+  cleanup:
     enabled: true
 
 services:

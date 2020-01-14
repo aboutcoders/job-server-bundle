@@ -23,6 +23,7 @@ class AbcJobServerExtension extends Extension implements PrependExtensionInterfa
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
 
         $loader->load('services.yml');
@@ -30,9 +31,7 @@ class AbcJobServerExtension extends Extension implements PrependExtensionInterfa
         $diUtils = DiUtils::create();
 
         $driverFactoryId = $diUtils->format('driver_factory');
-        $container->register($driverFactoryId, DriverFactory::class)
-            ->addArgument(new Reference($diUtils->format('managed_route_registry')))
-            ->addArgument(new Reference('logger'));
+        $container->register($driverFactoryId, DriverFactory::class)->addArgument(new Reference($diUtils->format('managed_route_registry')))->addArgument(new Reference('logger'));
 
         $driverId = $diUtils->format('driver');
         $container->register($driverId, DriverInterface::class)->setFactory([
@@ -41,13 +40,21 @@ class AbcJobServerExtension extends Extension implements PrependExtensionInterfa
         ])->addArgument(new Reference(sprintf('enqueue.transport.%s.context', $config['transport'])));
 
         // scheduler
-        if (false == empty($config['scheduler']['enabled'])) {
+        if (false == empty($config['cronjob']['enabled'])) {
             $bundles = $container->getParameter('kernel.bundles');
             if (! isset($bundles['AbcSchedulerBundle'])) {
                 throw new \LogicException('The "aboutcoders/scheduler-bundle" package has to be installed.');
             }
 
-            $loader->load('scheduler.yml');
+            $loader->load('cronjob.yml');
+
+            if (false == empty($config['cleanup']['enabled'])) {
+                $loader->load('cleanup-cronjob.yml');
+            }
+        }
+
+        if (false == empty($config['cleanup']['enabled'])) {
+            $loader->load('cleanup.yml');
         }
     }
 

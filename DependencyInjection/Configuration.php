@@ -5,6 +5,7 @@ namespace Abc\JobServerBundle\DependencyInjection;
 use Abc\Job\Symfony\MissingComponentFactory;
 use Abc\Scheduler\Scheduler;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -27,6 +28,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('transport')->defaultValue('default')->end()
                 ->append($this->getSchedulerConfiguration())
+                ->append($this->getEndpointsConfiguration())
             ->end();
 
         return $tb;
@@ -35,10 +37,18 @@ class Configuration implements ConfigurationInterface
     private function getSchedulerConfiguration(): ArrayNodeDefinition
     {
         if (false === class_exists(Scheduler::class)) {
-            return MissingComponentFactory::getConfiguration('scheduler', ['abc/scheduler-bundle']);
+            return MissingComponentFactory::getConfiguration('cronjob', ['abc/scheduler-bundle']);
         }
 
-        return (new ArrayNodeDefinition('scheduler'))
+        return (new ArrayNodeDefinition('cronjob'))
+            ->addDefaultsIfNotSet()
+            ->canBeEnabled()
+            ;
+    }
+
+    private function getEndpointsConfiguration(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('cleanup'))
             ->addDefaultsIfNotSet()
             ->canBeEnabled()
             ;

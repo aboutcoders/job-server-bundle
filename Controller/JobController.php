@@ -4,7 +4,6 @@ namespace Abc\JobServerBundle\Controller;
 
 use Abc\Job\Controller\JobController as Controller;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,9 +15,9 @@ class JobController extends AbstractController
      */
     private $controller;
 
-    public function __construct(Controller $jobController)
+    public function __construct(Controller $controller)
     {
-        $this->controller = $jobController;
+        $this->controller = $controller;
     }
 
     /**
@@ -88,10 +87,5 @@ class JobController extends AbstractController
     public function delete(string $id, Request $request): Response
     {
         return $this->createResponse($this->controller->delete($id, $request->getUri()));
-    }
-
-    private function createResponse(ResponseInterface $response): Response
-    {
-        return new Response($response->getBody(), $response->getStatusCode(), $response->getHeaders());
     }
 }

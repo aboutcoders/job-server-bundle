@@ -25,7 +25,7 @@ composer install abc/job-server-bundle
     * Free composition of Job, Sequence, and Batch
 * Status information about jobs
 * Cancellation and restarting of jobs
-* Scheduled processing of jobs (requires [AbcSchedulerBundle](https://github.com/aboutcoders/scheduler-bundle/blob/master/AbcSchedulerBundle.php) 2.x) 
+* Cron jobs (requires [AbcSchedulerBundle](https://github.com/aboutcoders/scheduler-bundle/blob/master/AbcSchedulerBundle.php) 2.x) 
 * JSON REST-Api & PHP client library
 * [OpenApi](https://www.openapis.org/) documentation
 
@@ -58,11 +58,19 @@ composer install abc/job-server-bundle
 
 ## Configuration Reference
    
-   ```yaml
-   abc_job_server:
-       # whether to enable the scheduler component
-       scheduler:
-           enabled: true
+    ```yaml
+    abc_job_server:
+
+        # the enqueue transport name
+        transport: default
+        
+        # whether to enable the cronjob component
+        cronjob:
+            enabled: true
+        
+        # whether to enable the endpoints to cleanup jobs, and cronjobs
+        cleanup:
+            enabled: true
    ```
 
 ## License

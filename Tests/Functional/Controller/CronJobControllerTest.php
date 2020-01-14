@@ -1,9 +1,8 @@
 <?php
 
-namespace Abc\JobServerBundle\Tests\Functional\DependencyInjection;
+namespace Abc\JobServerBundle\Tests\Functional\Controller;
 
-use Abc\Job\Controller\CronJobController;
-use Abc\Job\Symfony\DiUtils;
+use Abc\JobServerBundle\Controller\CronJobController;
 use Abc\JobServerBundle\Tests\Functional\WebTestCase;
 
 /**
@@ -13,9 +12,7 @@ class CronJobControllerTest extends WebTestCase
 {
     public function testGetFromContainer()
     {
-        $diUtils = new DiUtils();
-
-        $consumer = static::$container->get($diUtils->format('base_cronjob_controller'));
+        $consumer = static::$container->get(CronJobController::class);
         $this->assertInstanceOf(CronJobController::class, $consumer);
     }
 }

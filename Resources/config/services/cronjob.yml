@@ -3,11 +3,11 @@ services:
     Abc\JobServerBundle\Controller\CronJobController:
         public: true
         arguments:
-            - '@abc.job.base_cronjob_controller'
+            - '@abc.job.controller.cronjob'
 
-    abc.job.base_cronjob_controller:
+    abc.job.controller.cronjob:
         class: Abc\Job\Controller\CronJobController
-        public: true
+        public: false
         arguments:
             - '@abc.job.cronjob_manager'
             - '@abc.job.job_server'

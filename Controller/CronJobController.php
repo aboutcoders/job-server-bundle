@@ -2,9 +2,7 @@
 
 namespace Abc\JobServerBundle\Controller;
 
-use \Abc\Job\Controller\CronJobController as Controller;
-use Psr\Http\Message\ResponseInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Abc\Job\Controller\CronJobController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,11 +12,11 @@ class CronJobController extends AbstractController
     /**
      * @var Controller
      */
-    private $cronJobController;
+    private $controller;
 
-    public function __construct(Controller $cronJobController)
+    public function __construct(Controller $controller)
     {
-        $this->cronJobController = $cronJobController;
+        $this->controller = $controller;
     }
 
     /**
@@ -29,7 +27,7 @@ class CronJobController extends AbstractController
      */
     public function list(Request $request)
     {
-        return $this->createResponse($this->cronJobController->list($request->getQueryString(), $request->getUri()));
+        return $this->createResponse($this->controller->list($request->getQueryString(), $request->getUri()));
     }
 
     /**
@@ -41,7 +39,7 @@ class CronJobController extends AbstractController
      */
     public function find(string $id, Request $request)
     {
-        return $this->createResponse($this->cronJobController->find($id, $request->getUri()));
+        return $this->createResponse($this->controller->find($id, $request->getUri()));
     }
 
     /**
@@ -53,7 +51,7 @@ class CronJobController extends AbstractController
      */
     public function results(string $id, Request $request)
     {
-        return $this->createResponse($this->cronJobController->results($id, $request->getUri()));
+        return $this->createResponse($this->controller->results($id, $request->getUri()));
     }
 
     /**
@@ -64,7 +62,7 @@ class CronJobController extends AbstractController
      */
     public function create(Request $request)
     {
-        return $this->createResponse($this->cronJobController->create($request->getContent(), $request->getUri()));
+        return $this->createResponse($this->controller->create($request->getContent(), $request->getUri()));
     }
 
     /**
@@ -76,7 +74,7 @@ class CronJobController extends AbstractController
      */
     public function update(string $id, Request $request)
     {
-        return $this->createResponse($this->cronJobController->update($id, $request->getContent(), $request->getUri()));
+        return $this->createResponse($this->controller->update($id, $request->getContent(), $request->getUri()));
     }
 
     /**
@@ -88,11 +86,6 @@ class CronJobController extends AbstractController
      */
     public function delete(string $id, Request $request)
     {
-        return $this->createResponse($this->cronJobController->delete($id, $request->getUri()));
-    }
-
-    private function createResponse(ResponseInterface $response): Response
-    {
-        return new Response($response->getBody(), $response->getStatusCode(), $response->getHeaders());
+        return $this->createResponse($this->controller->delete($id, $request->getUri()));
     }
 }

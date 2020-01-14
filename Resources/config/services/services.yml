@@ -3,14 +3,14 @@ services:
     Abc\JobServerBundle\Controller\JobController:
         public: true
         arguments:
-            - '@abc.job.base_job_controller'
+            - '@abc.job.controller.job'
 
     Abc\JobServerBundle\Controller\RouteController:
         public: true
         arguments:
-            - '@abc.job.base_route_controller'
+            - '@abc.job.controller.route'
 
-    abc.job.base_job_controller:
+    abc.job.controller.job:
         class: Abc\Job\Controller\JobController
         public: true
         arguments:
@@ -18,7 +18,7 @@ services:
             - '@abc.job.validator'
             - '@logger'
 
-    abc.job.base_route_controller:
+    abc.job.controller.route:
         class: Abc\Job\Controller\RouteController
         public: true
         arguments:

@@ -1,0 +1,13 @@
+services:
+
+    Abc\JobServerBundle\Controller\CleanupCronJobController:
+        public: true
+        arguments:
+            - '@abc.job.controller.cleanup_cronjob'
+
+    abc.job.controller.cleanup_cronjob:
+        class: Abc\Job\Controller\CleanupCronJobController
+        public: false
+        arguments:
+            - '@abc.job.cronjob_manager'
+            - '@logger'

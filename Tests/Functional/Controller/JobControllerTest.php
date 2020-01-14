@@ -1,9 +1,8 @@
 <?php
 
-namespace Abc\JobServerBundle\Tests\Functional\DependencyInjection;
+namespace Abc\JobServerBundle\Tests\Functional\Controller;
 
-use Abc\Job\Controller\JobController;
-use Abc\Job\Symfony\DiUtils;
+use Abc\JobServerBundle\Controller\JobController;
 use Abc\JobServerBundle\Tests\Functional\WebTestCase;
 
 /**
@@ -13,9 +12,7 @@ class JobControllerTest extends WebTestCase
 {
     public function testGetFromContainer()
     {
-        $diUtils = new DiUtils();
-
-        $consumer = static::$container->get($diUtils->format('base_job_controller'));
+        $consumer = static::$container->get(JobController::class);
         $this->assertInstanceOf(JobController::class, $consumer);
     }
 }
