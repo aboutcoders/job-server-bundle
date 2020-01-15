@@ -58,20 +58,20 @@ composer install abc/job-server-bundle
 
 ## Configuration Reference
    
-    ```yaml
-    abc_job_server:
+```yaml
+abc_job_server:
 
-        # the enqueue transport name
-        transport: default
-        
-        # whether to enable the cronjob component
-        cronjob:
-            enabled: true
-        
-        # whether to enable the endpoints to cleanup jobs, and cronjobs
-        cleanup:
-            enabled: true
-   ```
+    # the enqueue transport name
+    transport: default
+    
+    # whether to enable the cronjob component
+    cronjob:
+        enabled: true
+    
+    # whether to enable the endpoints to cleanup jobs, and cronjobs
+    cleanup:
+        enabled: true
+```
 
 ## License
 
