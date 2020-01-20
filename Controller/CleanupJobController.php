@@ -20,7 +20,7 @@ class CleanupJobController extends AbstractController
     }
 
     /**
-     * @Route("/cronjob", methods="DELETE")
+     * @Route("/job", methods="DELETE")
      *
      * @param Request $request
      * @return Response
