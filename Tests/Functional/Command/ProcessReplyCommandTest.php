@@ -46,6 +46,6 @@ class ProcessReplyCommandTest extends KernelTestCase
         // the output of the command in the console
         $output = $commandTester->getDisplay();
 
-        $this->assertContains('Consumption has started', $output);
+        $this->assertStringContainsString('Consumption has started', $output);
     }
 }

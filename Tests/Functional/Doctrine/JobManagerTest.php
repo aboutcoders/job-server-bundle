@@ -140,12 +140,23 @@ class JobManagerTest extends KernelTestCase
         $this->assertContains($job_D, $jobs);
     }
 
+    public function testFindByWithNonexistingExternalId()
+    {
+        $filter = new JobFilter();
+        $filter->setExternalIds(['externalId_A']);
+        $filter->setLatest(true);
+
+        $jobs = $this->jobManager->findBy($filter);
+
+        $this->assertEmpty($jobs);
+    }
+
     public function testDeleteAll()
     {
-        $job_A = $this->createJob('job_A', 'externalId_A', Status::SCHEDULED, new \DateTime("@100"));
-        $job_B = $this->createJob('job_B', 'externalId_A', Status::SCHEDULED, new \DateTime("@101"));
-        $job_C = $this->createJob('job_C', 'externalId_B', Status::SCHEDULED, new \DateTime("@100"));
-        $job_D = $this->createJob('job_D', 'externalId_B', Status::SCHEDULED, new \DateTime("@101"));
+        $this->createJob('job_A', 'externalId_A', Status::SCHEDULED, new \DateTime("@100"));
+        $this->createJob('job_B', 'externalId_A', Status::SCHEDULED, new \DateTime("@101"));
+        $this->createJob('job_C', 'externalId_B', Status::SCHEDULED, new \DateTime("@100"));
+        $this->createJob('job_D', 'externalId_B', Status::SCHEDULED, new \DateTime("@101"));
 
         $this->assertEquals(4, $this->jobManager->deleteAll());
         $this->assertEmpty($this->jobManager->findBy());
@@ -167,6 +178,8 @@ class JobManagerTest extends KernelTestCase
 
     private function getJobManager(KernelInterface $kernel): JobManagerInterface
     {
-        return $kernel->getContainer()->get('abc.job.job_manager');
+        return $kernel->getContainer()
+            ->get('abc.job.job_manager')
+            ;
     }
 }
