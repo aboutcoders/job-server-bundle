@@ -10,7 +10,6 @@ services:
         public: false
         arguments:
             - '@abc.job.cronjob_manager'
-            - '@abc.job.job_server'
             - '@abc.job.validator'
             - '@logger'
 
