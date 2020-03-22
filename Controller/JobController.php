@@ -28,6 +28,8 @@ class JobController extends AbstractController
      */
     public function list(Request $request)
     {
+        $request = new \GuzzleHttp\Psr7\Request($request->getMethod(), $request->getUri(), $request->headers->all(), $request->getContent(), $request->getProtocolVersion());
+
         return $this->createResponse($this->controller->list($request->getQueryString(), $request->getUri()));
     }
 
