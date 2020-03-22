@@ -1,5 +1,10 @@
 services:
 
+    Abc\JobServerBundle\Controller\BrokerController:
+        public: true
+        arguments:
+            - '@abc.job.controller.broker'
+
     Abc\JobServerBundle\Controller\JobController:
         public: true
         arguments:
@@ -9,12 +14,13 @@ services:
         public: true
         arguments:
             - '@abc.job.controller.route'
-
+            -
     abc.job.controller.broker:
-        class: Abc\Job\Controller\RouteController
+        class: Abc\Job\Controller\BrokerController
         public: true
         arguments:
-            - '@abc.job.route_registry'
+            - '@abc.job.broker_registry'
+            - '@logger'
 
     abc.job.controller.job:
         class: Abc\Job\Controller\JobController
