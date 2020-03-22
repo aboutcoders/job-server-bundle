@@ -28,7 +28,7 @@ class RouteController extends AbstractController
      */
     public function all(Request $request)
     {
-        return $this->createResponse($this->controller->all($request->getUri()));
+        return $this->createResponse($this->controller->list($request->getUri()));
     }
 
     /**
@@ -39,6 +39,6 @@ class RouteController extends AbstractController
      */
     public function create(Request $request)
     {
-        return $this->createResponse($this->controller->create($request->getContent(), $request->getUri()));
+        return $this->createResponse($this->controller->set($request->getContent(), $request->getUri()));
     }
 }
