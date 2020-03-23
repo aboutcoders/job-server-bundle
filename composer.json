@@ -1,7 +1,7 @@
 {
     "name": "abc/job-server-bundle",
     "type": "symfony-bundle",
-    "description": "A symfony bundle to manage jobs for asynchronous distributed processing using AbcJobWorkerBundle",
+    "description": "A symfony bundle to manage asynchronous distributed processing of stateful jobs",
     "keywords": ["job", "asynchronous", "distributed", "schedule", "cron", "queue"],
     "homepage": "http://aboutcoders.com",
     "license": "MIT",
@@ -15,10 +15,10 @@
         "php": "^7.2",
         "psr/log": "^1.0",
         "symfony/framework-bundle": "^4.3|^5",
-        "abc/job": "^0.1|dev-master"
+        "abc/job": "^0.2|dev-master"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0|9.0",
+        "phpunit/phpunit": "^8.0|^9.0",
         "symfony/browser-kit": "^4.3|5",
         "symfony/yaml": "^4.3|5",
         "dama/doctrine-test-bundle": "^6.2",

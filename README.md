@@ -6,16 +6,6 @@ A symfony bundle for asynchronous distributed job processing using [php-enqueue]
 
 **Note: This project is still experimental!**
 
-## Demo
-
-You can find a demo [here](https://gitlab.com/hasc/abc-job-demo/).
-
-## Installation
-
-```bash
-composer install abc/job-server-bundle
-```
-
 ## Features
 
 * Asynchronous distributed processing of 
@@ -29,11 +19,22 @@ composer install abc/job-server-bundle
 * JSON REST-Api & PHP client library
 * [OpenApi](https://www.openapis.org/) documentation
 
+## Demo
+
+You can find a demo [here](https://gitlab.com/hasc/abc-job-demo/).
+
+## Installation
+
+```bash
+composer install abc/job-server-bundle
+```
+
 ## Getting Started
 
 ### Prerequisites
 * EnqueueBundle is configured with a transport layer
 
+### Steps
 1. In case you configured a transport with a key different that `default` you have to configure this transport also for the AbcJobServerBundle
 
 	```yaml
@@ -54,7 +55,7 @@ composer install abc/job-server-bundle
 	bin/console abc:process:reply someReplyQueue
 	```
  
- 4. Create an application that will consume jobs using the [AbcJobWorkerBundle](https://github.com/aboutcoders/job-worker-bundle) that will process jobs.
+4. Create an application that will consume jobs using the [AbcJobWorkerBundle](https://github.com/aboutcoders/job-worker-bundle) that will process jobs.
 
 ## Configuration Reference
    
@@ -71,6 +72,24 @@ abc_job_server:
     # whether to enable the endpoints to cleanup jobs, and cronjobs
     cleanup:
         enabled: true
+```
+
+## Commands
+
+### Command `abc:broker:setup`
+
+The command `abc:broker:setup` declares queues at the broker for all registered routes.
+
+```bash
+bin/console abc:broker:setup --help
+```
+
+### Command `abc:reply:process`
+
+The command `abc:reply:process` processes job replies from queues, updates job information and schedules dependant jobs 
+
+```bash
+bin/console abc:reply:process --help
 ```
 
 ## License

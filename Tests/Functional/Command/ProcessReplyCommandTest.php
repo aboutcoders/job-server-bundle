@@ -2,6 +2,7 @@
 
 namespace Abc\JobWorkerBundle\Tests\Functional\Command;
 
+use Abc\Job\Symfony\Command\ProcessReplyCommand;
 use Abc\JobServerBundle\Tests\Functional\KernelTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -9,6 +10,16 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class ProcessReplyCommandTest extends KernelTestCase
 {
+    public function testAlias()
+    {
+        $kernel = static::createKernel();
+
+        $application = new Application($kernel);
+
+        $command = $application->find('abc:process:reply');
+        $this->assertInstanceOf(ProcessReplyCommand::class, $command);
+    }
+
     public function testExecute()
     {
         $kernel = static::createKernel();
@@ -17,7 +28,7 @@ class ProcessReplyCommandTest extends KernelTestCase
         $timestamp = strtotime('yesterday');
         $timeLimit = new \DateTime("@$timestamp");
 
-        $command = $application->find('abc:process:reply');
+        $command = $application->find('abc:reply:process');
 
         $input = [
             'command' => $command->getName(),

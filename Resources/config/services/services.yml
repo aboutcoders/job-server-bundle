@@ -1,5 +1,10 @@
 services:
 
+    Abc\JobServerBundle\Controller\BrokerController:
+        public: true
+        arguments:
+            - '@abc.job.controller.broker'
+
     Abc\JobServerBundle\Controller\JobController:
         public: true
         arguments:
@@ -9,6 +14,13 @@ services:
         public: true
         arguments:
             - '@abc.job.controller.route'
+            -
+    abc.job.controller.broker:
+        class: Abc\Job\Controller\BrokerController
+        public: true
+        arguments:
+            - '@abc.job.broker_registry'
+            - '@logger'
 
     abc.job.controller.job:
         class: Abc\Job\Controller\JobController
@@ -25,6 +37,12 @@ services:
             - '@abc.job.route_registry'
             - '@abc.job.validator'
             - '@logger'
+
+    Abc\Job\Broker\RegistryInterface:
+        alias: 'abc.job.broker_registry'
+
+    abc.job.broker_registry:
+        class: Abc\Job\Broker\Registry
 
     Abc\Job\Model\JobManagerInterface:
         alias: 'abc.job.job_manager'
@@ -61,13 +79,8 @@ services:
             - '@abc.job.driver'
 
     abc.job.route_registry:
-        alias: 'abc.job.setup_broker_route_registry'
-
-    abc.job.setup_broker_route_registry:
-        class: Abc\Job\Broker\SetupBrokerRouteRegistry
-        arguments:
-            - '@abc.job.driver'
-            - '@abc.job.managed_route_registry'
+        alias: 'abc.job.managed_route_registry'
+        public: true
 
     abc.job.managed_route_registry:
         class: Abc\Job\Broker\ManagedRouteRegistry
@@ -95,5 +108,13 @@ services:
         class: 'Abc\Job\Symfony\Command\ProcessReplyCommand'
         arguments:
             - '@enqueue.transport.consume_command'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'console.command', command: 'abc:process:reply' }
+
+    abc.job.setup_broker_command:
+        class: 'Abc\Job\Symfony\Command\SetupBrokerCommand'
+        arguments:
+            - '@abc.job.broker_registry'
         tags:
             - { name: 'console.command' }
