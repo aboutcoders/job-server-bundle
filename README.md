@@ -81,7 +81,7 @@ abc_job_server:
 The command `abc:broker:setup` declares queues at the broker for all registered routes.
 
 ```bash
-bin/console abc:routes:register --help
+bin/console abc:broker:setup --help
 ```
 
 ### Command `abc:reply:process`
@@ -89,7 +89,7 @@ bin/console abc:routes:register --help
 The command `abc:reply:process` processes job replies from queues, updates job information and schedules dependant jobs 
 
 ```bash
-bin/console abc:routes:register --help
+bin/console abc:reply:process --help
 ```
 
 ## License
