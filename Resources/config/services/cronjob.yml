@@ -19,6 +19,10 @@ services:
         arguments:
             - '@abc.job.cronjob_entity_manager'
 
+    Abc\Job\Model\CronJobManagerInterface:
+        public: true
+        alias: 'abc.job.cronjob_entity_manager'
+
     abc.job.cronjob_entity_manager:
         class: 'Abc\Job\Doctrine\CronJobManager'
         arguments:
