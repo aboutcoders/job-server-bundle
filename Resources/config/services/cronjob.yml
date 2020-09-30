@@ -33,6 +33,7 @@ services:
         class: Abc\Job\Schedule\ScheduleProvider
         arguments:
             - '@abc.job.cronjob_manager'
+            - '@abc.job.job_manager'
         tags:
             - { name: 'abc.scheduler.schedule_provider' }
 

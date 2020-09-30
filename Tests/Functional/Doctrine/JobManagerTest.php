@@ -39,9 +39,9 @@ class JobManagerTest extends KernelTestCase
 
     public function testFindByFiltersById()
     {
-        $job_A = $this->createJob('job_A', null, Status::SCHEDULED, new \DateTime("@100"));
-        $job_B = $this->createJob('job_B', null, Status::SCHEDULED, new \DateTime("@100"));
-        $job_C = $this->createJob('job_C', null, Status::SCHEDULED, new \DateTime("@100"));
+        $job_A = $this->saveJob('job_A', null, Status::SCHEDULED, new \DateTime("@100"));
+        $job_B = $this->saveJob('job_B', null, Status::SCHEDULED, new \DateTime("@100"));
+        $job_C = $this->saveJob('job_C', null, Status::SCHEDULED, new \DateTime("@100"));
 
         $filter = new JobFilter();
         $filter->setIds([$job_A->getId(), $job_B->getId()]);
@@ -55,9 +55,9 @@ class JobManagerTest extends KernelTestCase
 
     public function testFindByFiltersByStatus()
     {
-        $job_A = $this->createJob('job_A', null, Status::SCHEDULED, new \DateTime("@100"));
-        $job_B = $this->createJob('job_B', null, Status::RUNNING, new \DateTime("@100"));
-        $job_C = $this->createJob('job_C', null, Status::FAILED, new \DateTime("@100"));
+        $job_A = $this->saveJob('job_A', null, Status::SCHEDULED, new \DateTime("@100"));
+        $job_B = $this->saveJob('job_B', null, Status::RUNNING, new \DateTime("@100"));
+        $job_C = $this->saveJob('job_C', null, Status::FAILED, new \DateTime("@100"));
 
         $filter = new JobFilter();
         $filter->setStatus([Status::SCHEDULED, Status::RUNNING]);
@@ -71,9 +71,9 @@ class JobManagerTest extends KernelTestCase
 
     public function testFindByFiltersByName()
     {
-        $job_A = $this->createJob('job_A', null, Status::SCHEDULED, new \DateTime("@100"));
-        $job_B = $this->createJob('job_B', null, Status::SCHEDULED, new \DateTime("@100"));
-        $job_C = $this->createJob('job_C', null, Status::SCHEDULED, new \DateTime("@100"));
+        $job_A = $this->saveJob('job_A', null, Status::SCHEDULED, new \DateTime("@100"));
+        $job_B = $this->saveJob('job_B', null, Status::SCHEDULED, new \DateTime("@100"));
+        $job_C = $this->saveJob('job_C', null, Status::SCHEDULED, new \DateTime("@100"));
 
         $filter = new JobFilter();
         $filter->setNames(['job_A', 'job_B']);
@@ -87,9 +87,9 @@ class JobManagerTest extends KernelTestCase
 
     public function testFindByFiltersByExternalId()
     {
-        $job_A = $this->createJob('job_A', 'externalId_A', Status::SCHEDULED, new \DateTime("@100"));
-        $job_B = $this->createJob('job_A', 'externalId_B', Status::SCHEDULED, new \DateTime("@100"));
-        $job_C = $this->createJob('job_A', 'externalId_C', Status::SCHEDULED, new \DateTime("@100"));
+        $job_A = $this->saveJob('job_A', 'externalId_A', Status::SCHEDULED, new \DateTime("@100"));
+        $job_B = $this->saveJob('job_A', 'externalId_B', Status::SCHEDULED, new \DateTime("@100"));
+        $job_C = $this->saveJob('job_A', 'externalId_C', Status::SCHEDULED, new \DateTime("@100"));
 
         $filter = new JobFilter();
         $filter->setExternalIds(['externalId_A', 'externalId_B']);
@@ -103,10 +103,10 @@ class JobManagerTest extends KernelTestCase
 
     public function testFindByFiltersCombinesFilters()
     {
-        $job_A = $this->createJob('job_A', 'externalId_A', Status::SCHEDULED, new \DateTime("@100"));
-        $job_B = $this->createJob('job_B', 'externalId_B', Status::RUNNING, new \DateTime("@100"));
-        $job_C = $this->createJob('job_C', 'externalId_C', Status::FAILED, new \DateTime("@100"));
-        $job_D = $this->createJob('job_D', 'externalId_D', Status::RUNNING, new \DateTime("@100"));
+        $job_A = $this->saveJob('job_A', 'externalId_A', Status::SCHEDULED, new \DateTime("@100"));
+        $job_B = $this->saveJob('job_B', 'externalId_B', Status::RUNNING, new \DateTime("@100"));
+        $job_C = $this->saveJob('job_C', 'externalId_C', Status::FAILED, new \DateTime("@100"));
+        $job_D = $this->saveJob('job_D', 'externalId_D', Status::RUNNING, new \DateTime("@100"));
 
         $filter = new JobFilter();
         $filter->setIds([$job_A->getId(), $job_B->getId(), $job_C->getId()]);
@@ -124,10 +124,10 @@ class JobManagerTest extends KernelTestCase
 
     public function testFindByFiltersByLatestExternal()
     {
-        $job_A = $this->createJob('job_A', 'externalId_A', Status::SCHEDULED, new \DateTime("@100"));
-        $job_B = $this->createJob('job_B', 'externalId_A', Status::SCHEDULED, new \DateTime("@101"));
-        $job_C = $this->createJob('job_C', 'externalId_B', Status::SCHEDULED, new \DateTime("@100"));
-        $job_D = $this->createJob('job_D', 'externalId_B', Status::SCHEDULED, new \DateTime("@101"));
+        $job_A = $this->saveJob('job_A', 'externalId_A', Status::SCHEDULED, new \DateTime("@100"));
+        $job_B = $this->saveJob('job_B', 'externalId_A', Status::SCHEDULED, new \DateTime("@101"));
+        $job_C = $this->saveJob('job_C', 'externalId_B', Status::SCHEDULED, new \DateTime("@100"));
+        $job_D = $this->saveJob('job_D', 'externalId_B', Status::SCHEDULED, new \DateTime("@101"));
 
         $filter = new JobFilter();
         $filter->setExternalIds(['externalId_A', 'externalId_B']);
@@ -140,7 +140,7 @@ class JobManagerTest extends KernelTestCase
         $this->assertContains($job_D, $jobs);
     }
 
-    public function testFindByWithNonexistingExternalId()
+    public function testFindByWithNonExistingExternalId()
     {
         $filter = new JobFilter();
         $filter->setExternalIds(['externalId_A']);
@@ -151,23 +151,95 @@ class JobManagerTest extends KernelTestCase
         $this->assertEmpty($jobs);
     }
 
+    /**
+     * @dataProvider provideConcurrentExistsData
+     */
+    public function testExistsConcurrentWithConcurrentExists(array $savedJobArray, array $givenJobArray)
+    {
+        $this->saveJob(
+            $savedJobArray['name'],
+            $savedJobArray['externalId'] ?? null,
+            $savedJobArray['status'],
+            new \DateTime("@100"),
+            $savedJobArray['input'] ?? null
+        );
+
+        $job = \Abc\Job\Job::fromArray($givenJobArray);
+
+        $this->assertTrue($this->jobManager->existsConcurrent($job));
+    }
+
+    /**
+     * @dataProvider provideNoConcurrentExistsData
+     */
+    public function testExistsConcurrentWithNoConcurrentExists(array $savedJobArray, array $givenJobArray)
+    {
+        $this->saveJob(
+            $savedJobArray['name'],
+            $savedJobArray['externalId'] ?? null,
+            $savedJobArray['status'],
+            new \DateTime("@100"),
+            $savedJobArray['input'] ?? null
+        );
+
+        $job = \Abc\Job\Job::fromArray($givenJobArray);
+
+        $this->assertFalse($this->jobManager->existsConcurrent($job));
+    }
+
+    public function testExistsConcurrentWithNoJobs()
+    {
+        $job = \Abc\Job\Job::fromArray(
+            [
+                'name' => 'SomeName',
+                'type' => Type::JOB(),
+            ]
+        );
+
+        $this->assertFalse($this->jobManager->existsConcurrent($job));
+    }
+
+    public function testExistsConcurrentWithOlderConcurrentJob()
+    {
+        $name = 'someName';
+
+        $this->saveJob($name, null, Status::RUNNING, new \DateTime("@100"));
+        $this->saveJob($name, null, Status::CANCELLED, new \DateTime("@200"));
+
+
+        $job = \Abc\Job\Job::fromArray(
+            [
+                'name' => $name,
+                'type' => Type::JOB(),
+            ]
+        );
+
+        $this->assertFalse($this->jobManager->existsConcurrent($job));
+    }
+
     public function testDeleteAll()
     {
-        $this->createJob('job_A', 'externalId_A', Status::SCHEDULED, new \DateTime("@100"));
-        $this->createJob('job_B', 'externalId_A', Status::SCHEDULED, new \DateTime("@101"));
-        $this->createJob('job_C', 'externalId_B', Status::SCHEDULED, new \DateTime("@100"));
-        $this->createJob('job_D', 'externalId_B', Status::SCHEDULED, new \DateTime("@101"));
+        $this->saveJob('job_A', 'externalId_A', Status::SCHEDULED, new \DateTime("@100"));
+        $this->saveJob('job_B', 'externalId_A', Status::SCHEDULED, new \DateTime("@101"));
+        $this->saveJob('job_C', 'externalId_B', Status::SCHEDULED, new \DateTime("@100"));
+        $this->saveJob('job_D', 'externalId_B', Status::SCHEDULED, new \DateTime("@101"));
 
         $this->assertEquals(4, $this->jobManager->deleteAll());
         $this->assertEmpty($this->jobManager->findBy());
     }
 
-    private function createJob(string $name, ?string $externalId, ?string $status, ?\DateTime $createdAt): Job
-    {
+    private function saveJob(
+        string $name,
+        ?string $externalId,
+        ?string $status,
+        ?\DateTime $createdAt,
+        string $input = null
+    ): Job {
         $job = new Job();
         $job->setType(Type::JOB());
         $job->setName($name);
         $job->setStatus($status);
+        $job->setInput($input);
         $job->setExternalId($externalId);
         $job->setCreatedAt($createdAt);
 
@@ -179,7 +251,98 @@ class JobManagerTest extends KernelTestCase
     private function getJobManager(KernelInterface $kernel): JobManagerInterface
     {
         return $kernel->getContainer()
-            ->get('abc.job.job_manager')
-            ;
+            ->get('abc.job.job_manager');
+    }
+
+    public function provideConcurrentExistsData()
+    {
+        return [
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'status' => Status::SCHEDULED],
+                ['type' => Type::JOB(), 'name' => 'JobA']
+            ],
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'status' => Status::WAITING],
+                ['type' => Type::JOB(), 'name' => 'JobA']
+            ],
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'status' => Status::RUNNING],
+                ['type' => Type::JOB(), 'name' => 'JobA']
+            ],
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'input' => 'someInput', 'status' => Status::RUNNING],
+                ['type' => Type::JOB(), 'name' => 'JobA', 'input' => 'someInput']
+            ],
+            [
+                [
+                    'type' => Type::JOB(),
+                    'name' => 'JobA',
+                    'externalId' => 'someExternalId',
+                    'status' => Status::RUNNING
+                ],
+                ['type' => Type::JOB(), 'name' => 'JobA', 'externalId' => 'someExternalId']
+            ]
+            ,
+            [
+                [
+                    'type' => Type::JOB(),
+                    'name' => 'JobA',
+                    'input' => 'someInput',
+                    'externalId' => 'someExternalId',
+                    'status' => Status::RUNNING
+                ],
+                ['type' => Type::JOB(), 'name' => 'JobA', 'input' => 'someInput', 'externalId' => 'someExternalId']
+            ]
+        ];
+    }
+
+    public function provideNoConcurrentExistsData()
+    {
+        return [
+            # name does not match
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'status' => Status::SCHEDULED],
+                ['type' => Type::JOB(), 'name' => 'JobB']
+            ],
+            # status does not match
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'status' => Status::CANCELLED],
+                ['type' => Type::JOB(), 'name' => 'JobA']
+            ],
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'status' => Status::COMPLETE],
+                ['type' => Type::JOB(), 'name' => 'JobA']
+            ],
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'status' => Status::FAILED],
+                ['type' => Type::JOB(), 'name' => 'JobA']
+            ],
+            # externalId does not match
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'externalId' => 'someExternalId', 'status' => Status::FAILED],
+                ['type' => Type::JOB(), 'name' => 'JobA']
+            ],
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'externalId' => 'someExternalId', 'status' => Status::FAILED],
+                ['type' => Type::JOB(), 'name' => 'JobA', 'externalId' => 'anotherExternalId']
+            ],
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'status' => Status::FAILED],
+                ['type' => Type::JOB(), 'name' => 'JobA', 'externalId' => 'anotherExternalId']
+            ],
+            # input does not match
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'input' => 'someInput', 'status' => Status::FAILED],
+                ['type' => Type::JOB(), 'name' => 'JobA']
+            ],
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'input' => 'someInput', 'status' => Status::FAILED],
+                ['type' => Type::JOB(), 'name' => 'JobA', 'input' => 'differentInput']
+            ],
+            [
+                ['type' => Type::JOB(), 'name' => 'JobA', 'status' => Status::FAILED],
+                ['type' => Type::JOB(), 'name' => 'JobA', 'input' => 'someInput']
+            ]
+        ];
     }
 }
