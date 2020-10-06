@@ -97,12 +97,19 @@ services:
         tags:
             - { name: 'enqueue.transport.processor', processor: 'job_reply' }
 
+    abc.job.reply_extension:
+        class: Abc\Job\ReplyReceivedExtension\ChainExtension
+        arguments:
+            - []
+        public: true
+
     abc.job.reply_processor:
         class: Abc\Job\ReplyProcessor
         arguments:
             - '@abc.job.job_server'
             - '@Abc\Job\Model\JobManagerInterface'
             - '@logger'
+            - '@abc.job.reply_extension'
 
     abc.job.process_reply_command:
         class: 'Abc\Job\Symfony\Command\ProcessReplyCommand'
