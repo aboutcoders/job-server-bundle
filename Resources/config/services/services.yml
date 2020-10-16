@@ -48,17 +48,22 @@ services:
         alias: 'abc.job.job_manager'
 
     abc.job.job_manager:
-        class: 'Abc\Job\Doctrine\JobManager'
+        class: Abc\Job\Doctrine\JobManager
         public: true
         arguments:
             - '@doctrine.orm.entity_manager'
             - 'Abc\Job\Model\Job'
 
+    Abc\Job\JobManager:
+        arguments:
+            - '@abc.job.job_manager'
+            - '@abc.job.pre_save_extension'
+
     Abc\Job\Model\RouteManagerInterface:
         alias: 'abc.job.route_manager'
 
     abc.job.route_manager:
-        class: 'Abc\Job\Doctrine\RouteManager'
+        class: Abc\Job\Doctrine\RouteManager
         arguments:
             - '@doctrine.orm.entity_manager'
 
@@ -67,7 +72,7 @@ services:
         public: true
         arguments:
             - '@abc.job.producer'
-            - '@Abc\Job\Model\JobManagerInterface'
+            - '@Abc\Job\JobManager'
             - '@logger'
 
     abc.job.validator:
@@ -97,8 +102,8 @@ services:
         tags:
             - { name: 'enqueue.transport.processor', processor: 'job_reply' }
 
-    abc.job.reply_extension:
-        class: Abc\Job\ReplyReceivedExtension\ChainExtension
+    abc.job.pre_save_extension:
+        class: Abc\Job\PreSaveExtension\ChainExtension
         arguments:
             - []
         public: true
@@ -107,12 +112,11 @@ services:
         class: Abc\Job\ReplyProcessor
         arguments:
             - '@abc.job.job_server'
-            - '@Abc\Job\Model\JobManagerInterface'
+            - '@Abc\Job\JobManager'
             - '@logger'
-            - '@abc.job.reply_extension'
 
     abc.job.process_reply_command:
-        class: 'Abc\Job\Symfony\Command\ProcessReplyCommand'
+        class: Abc\Job\Symfony\Command\ProcessReplyCommand
         arguments:
             - '@enqueue.transport.consume_command'
         tags:
